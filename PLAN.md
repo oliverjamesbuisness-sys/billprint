@@ -14,7 +14,7 @@ Upload a photo or PDF of a home utility bill (electric and/or gas). BillPrint:
 | Criterion | Our answer |
 |---|---|
 | Working & well built | Deployed from hour 1; thin end-to-end first; typed schema; unit tests on all math |
-| Originality | (council to pick ONE) "show the math" / grid-aware recommendations / measured per-field accuracy shown in the UI |
+| Originality | Measured per-field accuracy + bill quote shown where the user confirms; "show the math" on every number |
 | Real impact | Personalized to the user's own usage, grid region and season; dollar savings make it actionable |
 | Testing & honesty | 30+ bill eval with per-field accuracy, failure list, hallucination rate; failure modes in README |
 | Communication | 3-step UI, every number traceable to a source, README diagram |
@@ -64,18 +64,37 @@ utility type is derived (electricity / gas / both) from which blocks are present
 kWh outside ~50–5,000 per 30 days · gas outside ~0–400 therms per 30 days · period not 20–40 days ·
 end before start · ZIP not in EPA lookup · negative usage (solar net metering) · bill not recognized.
 
-## Methodology — current defaults (OPEN for council)
-1. **Electricity factor**: EPA eGRID subregion *total output* CO2e rate (location-based, annual average) by ZIP;
-   alternatives: eGRID *non-baseload* rate (≈ marginal) for savings; adding grid T&D loss.
-2. **Gas factor**: EPA GHG Emission Factors Hub, natural gas combustion (kg CO2/MMBtu + CH4 + N2O).
-   Combustion only; upstream methane leakage noted qualitatively, not added.
-3. **Time basis**: report per billing period (and per day); annual only as "if every period were like this" with caveat — or not at all.
-4. **Recommendations**: fixed library of ~8 actions with % savings ranges cited to DOE / ENERGY STAR; filter by
-   utility type + season; rank by this bill's kg CO2e saved; show ranges, not point estimates.
-   Alternative: LLM writes the recommendations (rejected so far: unauditable numbers).
-5. **Dollar savings**: EIA average residential price (state or national) vs the bill's own average $/kWh
-   (includes fixed charges → overstates marginal savings).
-6. **Units**: CCF→therms via EIA average heat content (~1.037 therms/CCF) when the bill shows no therm factor.
+## Decisions (locked 2026-10-06: LLM council + product brief + builder's answers)
+Each line ends with the sentence to say to a judge.
+1. **Differentiator: measured accuracy in the review screen + quote check.** Each extracted field shows the exact
+   bill text it came from and how often our extractor got that field wrong in testing ("k of n"). *"We don't trust
+   the model's self-confidence; we show measured error right where you check."*
+2. **Electricity: one eGRID2023 total-output average for footprint AND savings.** *"It's EPA's location-based factor;
+   non-baseload isn't a true marginal rate (EPA points to AVERT for that), and one factor means a 10% cut is a 10% cut."*
+   No ZIP → U.S. average (349.67 kg/MWh), labeled, because regions range 110–702 kg/MWh.
+3. **Gas: EPA Emission Factors Hub 2025 combustion factor (5.311 kg CO2e/therm, AR5 GWPs), labeled a lower bound.**
+   *"eGRID also excludes upstream methane, so adding it only to home gas would rig every gas-vs-electric comparison."*
+   CCF→therms with EPA's heat content (1.026); therms used whenever the bill prints them.
+4. **Time: per bill + per 30 days, plus a SEASONAL annual estimate** (bill usage ÷ the share of a typical year's use
+   that falls in those days, from EIA national monthly residential data). *"A January gas bill ×12 can double the real
+   year, so we scale by EIA's monthly pattern instead."*
+5. **$ savings: the bill's own rate** (cost ÷ usage, when printed and within a plausible range), else EIA national
+   average. Labeled "includes fixed fees, so savings may be slightly high". *"It's your price, not a national guess."*
+6. **Recommendations: exactly 3, rule-based, reductions only** (no TOU shifting, no fuel switching: their CO2 effect
+   can't be computed honestly from one bill). Triggered by THIS bill (fuel, season, usage vs typical home, grid
+   intensity); % savings from DOE/ENERGY STAR applied to the EIA RECS end-use share; never summed.
+   *"Claude reads the bill; everything after your confirmation is cited, unit-tested code."*
+7. **Model confidence**: kept in the schema (brief asked) but not shown as a probability; the eval measures whether
+   "high" actually predicts correctness.
+8. **Privacy**: file only in memory for one request, never stored or logged; no names/account numbers extracted;
+   UI says it's sent once to Anthropic's Claude API.
+9. **Flow (EcoTracker)**: upload → "is this a utility bill?" (same Claude call) → extract → one-tap confirm → result.
+   No account. History + a simple streak later, stored only in the browser (numbers only).
+10. **UI (Altus IQ + Watershed + CoolClimate)**: navy hero with one big number and trend line, white card sheet,
+    labeled breakdown cards, stat tiles, "your home vs typical US home" bar, one green accent.
+11. **Eval honesty (council's biggest risk)**: bills tagged by source; report per source with n and 95% intervals;
+    ~10 bills with a genuinely missing field (fabrication test); remit-ZIP / history-chart traps; tune on synthetic,
+    freeze the prompt, then score held-out utility samples; labels + scorer published in the repo.
 
 ## Eval
 - `eval/bills/{synthetic,public,private}`; target 30+ bills: synthetic (varied layouts, providers, units, date formats,
