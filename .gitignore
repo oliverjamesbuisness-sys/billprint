@@ -32,6 +32,13 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
+
+# real utility bills contain names/addresses: never commit them
+/eval/bills/private/
+
+# UI UX Pro Max tool files (we commit the design system it generates, not the tool)
+/.claude/skills/ui-ux-pro-max/
 
 # vercel
 .vercel
