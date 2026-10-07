@@ -128,3 +128,23 @@
     @apply font-sans;
   }
 }
+/* BillPrint brand tokens (design-system/billprint/MASTER.md) */
+@theme {
+  --color-navy: #0b1f33;
+  --color-navy-ink: #0f2a44;
+  --color-brand: #059669;
+  --color-brand-dark: #047857;
+  --color-brand-tint: #ecfdf5;
+  --color-page: #f4f6f8;
+  --color-ink: #1f2937;
+  --color-ink-muted: #6b7280;
+  --color-line: #e5e7eb;
+  --color-warn: #b45309;
+  --color-warn-tint: #fffbeb;
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

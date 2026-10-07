@@ -30,6 +30,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
     "exceljs": "^4.4.0",
+    "playwright-core": "^1.63.0",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",
