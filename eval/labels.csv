@@ -1,0 +1,39 @@
+file,source,is_utility_bill,provider,service_zip,period_start,period_end,electricity_kwh,gas_usage,gas_unit,electricity_cost_usd,gas_cost_usd,total_cost_usd,traps
+synthetic/001_bayfront_electric.pdf,synthetic_clean,true,Bayfront Gas & Electric,94110,2026-07-05,2026-08-03,635,,,233.28,,233.28,remit_zip;history_chart;meter_reads
+synthetic/002_quillfield_electric.png,synthetic_clean,true,Quillfield Energy,10001,2025-12-21,2026-01-24,751,,,226.13,,226.13,previous_usage
+synthetic/003_tamberlane_gas.jpg,synthetic_degraded,true,Tamberlane Gas Company,63101,2025-12-16,2026-01-15,,77.6,therms,,115.37,115.37,remit_zip;meter_reads;ccf_and_therms;degraded
+synthetic/004_bellmoor_electric.pdf,synthetic_clean,true,Bellmoor Electric,60601,2026-04-22,2026-05-19,573,,,102.67,,102.67,history_chart;meter_reads;multi_page
+synthetic/005_kestrel_combined.png,synthetic_clean,true,Kestrel Ridge Energy,80202,2025-12-07,2026-01-07,647,12.33,Dth,122.91,125.05,247.96,remit_zip;history_chart;combined
+synthetic/006_pinewhistle_gas.jpg,synthetic_degraded,true,Pinewhistle Natural Gas,,2026-04-22,2026-05-26,,20,therms,,45.94,45.94,missing_zip;degraded
+synthetic/007_duskvale_electric.pdf,synthetic_clean,true,Duskvale Electric,85004,2026-02-22,2026-03-21,376,,,43.87,,43.87,previous_usage;net_metering
+synthetic/008_vantorra_electric.png,synthetic_clean,true,Vantorra Energy,77002,2026-04-21,2026-05-21,1069,,,179.22,,179.22,remit_zip;history_chart;previous_usage
+synthetic/009_harrowgate_gas.jpg,synthetic_degraded,true,Harrowgate Gas Service,02139,2026-07-02,2026-07-29,,11,CCF,,41.98,41.98,meter_reads;degraded
+synthetic/010_bayfront_combined.pdf,synthetic_clean,true,Bayfront Gas & Electric,94110,2025-12-13,2026-01-11,675,51,therms,245.77,133.77,379.54,meter_reads;multi_page;combined
+synthetic/011_coralwick_electric.png,synthetic_clean,true,Coralwick Power & Light,33101,,,610,,,97.60,,97.60,history_chart;missing_dates
+synthetic/012_graymarsh_electric.jpg,synthetic_degraded,true,Graymarsh Public Power,98101,2025-11-26,2025-12-24,566,,,77.31,,77.31,remit_zip;degraded
+synthetic/013_saltmarsh_electric.pdf,synthetic_clean,true,Saltmarsh Light & Power,02139,2026-02-19,2026-03-20,460,,,154.33,,154.33,remit_zip;previous_usage;multi_page
+synthetic/014_quillfield_combined.png,synthetic_clean,true,Quillfield Energy,10001,2026-05-16,2026-06-16,855,15.6,therms,235.91,50.20,286.11,history_chart;meter_reads;combined;ccf_and_therms
+synthetic/015_orrin_combined.jpg,synthetic_degraded,true,Orrin River Energy,63101,2026-06-09,2026-07-11,1168,1.2,MCF,174.01,22.59,196.60,previous_usage;combined;degraded
+synthetic/016_vantorra_electric.pdf,synthetic_clean,true,Vantorra Energy,,2026-08-01,2026-09-02,1125,,,175.23,,175.23,remit_zip;meter_reads;missing_zip
+synthetic/017_fenwick_gas.png,synthetic_clean,true,Fenwick Hollow Gas,60601,,,,17,therms,,36.85,36.85,missing_dates
+synthetic/018_thistledown_gas.jpg,synthetic_degraded,true,Thistledown Gas,77002,2026-04-18,2026-05-17,,1.2,MCF,,21.40,21.40,history_chart;degraded
+synthetic/019_duskvale_electric.pdf,synthetic_clean,true,Duskvale Electric,85004,2025-11-11,2025-12-15,469,,,38.18,,38.18,meter_reads;multi_page;net_metering
+synthetic/020_harrowgate_gas.png,synthetic_clean,true,Harrowgate Gas Service,02139,2026-01-17,2026-02-14,,91.4,therms,,185.55,185.55,remit_zip;ccf_and_therms
+synthetic/021_kestrel_combined.jpg,synthetic_degraded,true,Kestrel Ridge Energy,,2026-08-13,2026-09-10,710,1.71,Dth,124.13,26.93,151.06,combined;missing_zip;degraded
+synthetic/022_bayfront_combined.pdf,synthetic_clean,true,Bayfront Gas & Electric,94110,2025-12-06,2026-01-04,651,52,therms,244.98,125.81,370.79,history_chart;combined
+synthetic/023_bellmoor_electric.png,synthetic_clean,true,Bellmoor Electric,,2026-03-09,2026-04-12,537,,,100.37,,100.37,meter_reads;missing_zip
+synthetic/024_coralwick_electric.jpg,synthetic_degraded,true,Coralwick Power & Light,33101,,,1180,,,216.44,,216.44,previous_usage;missing_dates;degraded
+synthetic/025_quillfield_combined.pdf,synthetic_clean,true,Quillfield Energy,10001,,,691,67,CCF,199.31,125.78,325.09,remit_zip;combined;missing_dates
+synthetic/026_saltmarsh_electric.png,synthetic_clean,true,Saltmarsh Light & Power,02139,2026-08-20,2026-09-23,925,,,273.21,,273.21,remit_zip;previous_usage
+synthetic/027_orrin_electric.jpg,synthetic_degraded,true,Orrin River Energy,63101,2026-04-05,2026-05-07,809,,,103.02,,103.02,history_chart;meter_reads;degraded
+synthetic/028_graymarsh_electric.pdf,synthetic_clean,true,Graymarsh Public Power,98101,,,806,,,116.57,,116.57,multi_page;missing_dates
+synthetic/029_tamberlane_gas.png,synthetic_clean,true,Tamberlane Gas Company,63101,2026-03-21,2026-04-20,,34.2,therms,,63.07,63.07,remit_zip;meter_reads;ccf_and_therms
+synthetic/030_kestrel_electric.jpg,synthetic_degraded,true,Kestrel Ridge Energy,80202,2025-10-02,2025-11-04,713,,,67.19,,67.19,history_chart;net_metering;degraded
+synthetic/031_coralwick_electric.pdf,synthetic_clean,true,Coralwick Power & Light,,2025-11-27,2025-12-30,655,,,119.98,,119.98,remit_zip;meter_reads;missing_zip
+synthetic/032_quillfield_combined.png,synthetic_clean,true,Quillfield Energy,10001,2026-06-23,2026-07-28,882,13,CCF,229.40,35.76,265.16,previous_usage;combined
+synthetic/033_amberline_gas.jpg,synthetic_degraded,true,Amberline Gas,85004,2025-11-15,2025-12-13,,31,therms,,58.19,58.19,degraded
+synthetic/034_vantorra_electric.pdf,synthetic_clean,true,Vantorra Energy,77002,2026-08-22,2026-09-24,1406,,,205.27,,205.27,
+synthetic/035_fenwick_gas.png,synthetic_clean,true,Fenwick Hollow Gas,60601,2026-02-05,2026-03-04,,49,therms,,70.55,70.55,
+synthetic/036_parlance_telecom.pdf,synthetic_clean,false,,,,,,,,,,,non_bill
+synthetic/037_caldersprings_water.png,synthetic_clean,false,,,,,,,,,,,non_bill
+synthetic/038_hollinspratt_receipt.jpg,synthetic_degraded,false,,,,,,,,,,,non_bill;degraded

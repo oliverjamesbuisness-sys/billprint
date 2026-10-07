@@ -1,0 +1,730 @@
+{
+  "seed": 20261006,
+  "bills": [
+    {
+      "file": "synthetic/001_bayfront_electric.pdf",
+      "layout": "classic",
+      "format": "pdf",
+      "traps": [
+        "remit_zip",
+        "history_chart",
+        "meter_reads"
+      ],
+      "notes": [
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "slash",
+      "gas_unit": null,
+      "amount_due": 233.28,
+      "pages": 1
+    },
+    {
+      "file": "synthetic/002_quillfield_electric.png",
+      "layout": "modern",
+      "format": "png",
+      "traps": [
+        "previous_usage"
+      ],
+      "notes": [
+        "period and statement date fall in different years",
+        "unpaid balance $92.59: amount due is not the current charges",
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "short",
+      "gas_unit": null,
+      "amount_due": 318.72
+    },
+    {
+      "file": "synthetic/003_tamberlane_gas.jpg",
+      "layout": "dense",
+      "format": "jpg",
+      "traps": [
+        "remit_zip",
+        "meter_reads",
+        "ccf_and_therms",
+        "degraded"
+      ],
+      "notes": [
+        "period and statement date fall in different years",
+        "gas: 75 CCF × 1.0348 = 77.6 therms (label)"
+      ],
+      "date_style": "dmy",
+      "gas_unit": "therms",
+      "amount_due": 115.37,
+      "degrade": {
+        "tilt_deg": 4,
+        "width_px": 1011,
+        "blur_sigma": 0.58,
+        "jpeg_quality": 39,
+        "shadow_opacity": 0.4,
+        "light_spot_pct": [
+          23,
+          21
+        ]
+      }
+    },
+    {
+      "file": "synthetic/004_bellmoor_electric.pdf",
+      "layout": "tabular",
+      "format": "pdf",
+      "traps": [
+        "history_chart",
+        "meter_reads",
+        "multi_page"
+      ],
+      "notes": [],
+      "date_style": "slash",
+      "gas_unit": null,
+      "amount_due": 102.67,
+      "pages": 2
+    },
+    {
+      "file": "synthetic/005_kestrel_combined.png",
+      "layout": "combined",
+      "format": "png",
+      "traps": [
+        "remit_zip",
+        "history_chart",
+        "combined"
+      ],
+      "notes": [
+        "period printed without a year; statement date 2026-01-11 gives it",
+        "period and statement date fall in different years"
+      ],
+      "date_style": "yearless",
+      "gas_unit": "Dth",
+      "amount_due": 247.96
+    },
+    {
+      "file": "synthetic/006_pinewhistle_gas.jpg",
+      "layout": "classic",
+      "format": "jpg",
+      "traps": [
+        "missing_zip",
+        "degraded"
+      ],
+      "notes": [
+        "service address is street only"
+      ],
+      "date_style": "short",
+      "gas_unit": "therms",
+      "amount_due": 45.94,
+      "degrade": {
+        "tilt_deg": -7.7,
+        "width_px": 753,
+        "blur_sigma": 0.61,
+        "jpeg_quality": 34,
+        "shadow_opacity": 0.3,
+        "light_spot_pct": [
+          67,
+          33
+        ]
+      }
+    },
+    {
+      "file": "synthetic/007_duskvale_electric.pdf",
+      "layout": "modern",
+      "format": "pdf",
+      "traps": [
+        "previous_usage",
+        "net_metering"
+      ],
+      "notes": [
+        "net metering: label = 376 kWh delivered; 127 received, 249 net billed"
+      ],
+      "date_style": "long",
+      "gas_unit": null,
+      "amount_due": 43.87,
+      "pages": 1
+    },
+    {
+      "file": "synthetic/008_vantorra_electric.png",
+      "layout": "dense",
+      "format": "png",
+      "traps": [
+        "remit_zip",
+        "history_chart",
+        "previous_usage"
+      ],
+      "notes": [
+        "unpaid balance $77.52: amount due is not the current charges"
+      ],
+      "date_style": "slash",
+      "gas_unit": null,
+      "amount_due": 256.74
+    },
+    {
+      "file": "synthetic/009_harrowgate_gas.jpg",
+      "layout": "tabular",
+      "format": "jpg",
+      "traps": [
+        "meter_reads",
+        "degraded"
+      ],
+      "notes": [
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "slash",
+      "gas_unit": "CCF",
+      "amount_due": 41.98,
+      "degrade": {
+        "tilt_deg": -4.8,
+        "width_px": 808,
+        "blur_sigma": 0.95,
+        "jpeg_quality": 32,
+        "shadow_opacity": 0.43,
+        "light_spot_pct": [
+          20,
+          51
+        ]
+      }
+    },
+    {
+      "file": "synthetic/010_bayfront_combined.pdf",
+      "layout": "combined",
+      "format": "pdf",
+      "traps": [
+        "meter_reads",
+        "multi_page",
+        "combined"
+      ],
+      "notes": [
+        "period and statement date fall in different years",
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "short",
+      "gas_unit": "therms",
+      "amount_due": 379.54,
+      "pages": 2
+    },
+    {
+      "file": "synthetic/011_coralwick_electric.png",
+      "layout": "classic",
+      "format": "png",
+      "traps": [
+        "history_chart",
+        "missing_dates"
+      ],
+      "notes": [
+        "no period dates; statement date printed",
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "long",
+      "gas_unit": null,
+      "amount_due": 97.6
+    },
+    {
+      "file": "synthetic/012_graymarsh_electric.jpg",
+      "layout": "modern",
+      "format": "jpg",
+      "traps": [
+        "remit_zip",
+        "degraded"
+      ],
+      "notes": [],
+      "date_style": "dmy",
+      "gas_unit": null,
+      "amount_due": 77.31,
+      "degrade": {
+        "tilt_deg": 6.6,
+        "width_px": 751,
+        "blur_sigma": 0.95,
+        "jpeg_quality": 35,
+        "shadow_opacity": 0.27,
+        "light_spot_pct": [
+          76,
+          23
+        ]
+      }
+    },
+    {
+      "file": "synthetic/013_saltmarsh_electric.pdf",
+      "layout": "dense",
+      "format": "pdf",
+      "traps": [
+        "remit_zip",
+        "previous_usage",
+        "multi_page"
+      ],
+      "notes": [
+        "period printed without a year; statement date 2026-03-25 gives it",
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "yearless",
+      "gas_unit": null,
+      "amount_due": 154.33,
+      "pages": 2
+    },
+    {
+      "file": "synthetic/014_quillfield_combined.png",
+      "layout": "tabular",
+      "format": "png",
+      "traps": [
+        "history_chart",
+        "meter_reads",
+        "combined",
+        "ccf_and_therms"
+      ],
+      "notes": [
+        "gas: 15 CCF × 1.0398 = 15.6 therms (label)"
+      ],
+      "date_style": "slash",
+      "gas_unit": "therms",
+      "amount_due": 286.11
+    },
+    {
+      "file": "synthetic/015_orrin_combined.jpg",
+      "layout": "combined",
+      "format": "jpg",
+      "traps": [
+        "previous_usage",
+        "combined",
+        "degraded"
+      ],
+      "notes": [
+        "unpaid balance $163.43: amount due is not the current charges"
+      ],
+      "date_style": "short",
+      "gas_unit": "MCF",
+      "amount_due": 360.03,
+      "degrade": {
+        "tilt_deg": -6.4,
+        "width_px": 688,
+        "blur_sigma": 0.59,
+        "jpeg_quality": 38,
+        "shadow_opacity": 0.44,
+        "light_spot_pct": [
+          84,
+          23
+        ]
+      }
+    },
+    {
+      "file": "synthetic/016_vantorra_electric.pdf",
+      "layout": "classic",
+      "format": "pdf",
+      "traps": [
+        "remit_zip",
+        "meter_reads",
+        "missing_zip"
+      ],
+      "notes": [
+        "service address is street only"
+      ],
+      "date_style": "dmy",
+      "gas_unit": null,
+      "amount_due": 175.23,
+      "pages": 1
+    },
+    {
+      "file": "synthetic/017_fenwick_gas.png",
+      "layout": "modern",
+      "format": "png",
+      "traps": [
+        "missing_dates"
+      ],
+      "notes": [
+        "no period dates; statement date printed",
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "short",
+      "gas_unit": "therms",
+      "amount_due": 36.85
+    },
+    {
+      "file": "synthetic/018_thistledown_gas.jpg",
+      "layout": "dense",
+      "format": "jpg",
+      "traps": [
+        "history_chart",
+        "degraded"
+      ],
+      "notes": [
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "long",
+      "gas_unit": "MCF",
+      "amount_due": 21.4,
+      "degrade": {
+        "tilt_deg": -6.6,
+        "width_px": 971,
+        "blur_sigma": 0.66,
+        "jpeg_quality": 31,
+        "shadow_opacity": 0.45,
+        "light_spot_pct": [
+          16,
+          46
+        ]
+      }
+    },
+    {
+      "file": "synthetic/019_duskvale_electric.pdf",
+      "layout": "tabular",
+      "format": "pdf",
+      "traps": [
+        "meter_reads",
+        "multi_page",
+        "net_metering"
+      ],
+      "notes": [
+        "net metering: label = 469 kWh delivered; 270 received, 199 net billed"
+      ],
+      "date_style": "short",
+      "gas_unit": null,
+      "amount_due": 38.18,
+      "pages": 2
+    },
+    {
+      "file": "synthetic/020_harrowgate_gas.png",
+      "layout": "combined",
+      "format": "png",
+      "traps": [
+        "remit_zip",
+        "ccf_and_therms"
+      ],
+      "notes": [
+        "period printed without a year; statement date 2026-02-19 gives it",
+        "gas: 89 CCF × 1.0265 = 91.4 therms (label)"
+      ],
+      "date_style": "yearless_slash",
+      "gas_unit": "therms",
+      "amount_due": 185.55
+    },
+    {
+      "file": "synthetic/021_kestrel_combined.jpg",
+      "layout": "classic",
+      "format": "jpg",
+      "traps": [
+        "combined",
+        "missing_zip",
+        "degraded"
+      ],
+      "notes": [
+        "service address is street only"
+      ],
+      "date_style": "slash",
+      "gas_unit": "Dth",
+      "amount_due": 151.06,
+      "degrade": {
+        "tilt_deg": -4.3,
+        "width_px": 697,
+        "blur_sigma": 0.52,
+        "jpeg_quality": 38,
+        "shadow_opacity": 0.34,
+        "light_spot_pct": [
+          83,
+          41
+        ]
+      }
+    },
+    {
+      "file": "synthetic/022_bayfront_combined.pdf",
+      "layout": "modern",
+      "format": "pdf",
+      "traps": [
+        "history_chart",
+        "combined"
+      ],
+      "notes": [
+        "period printed without a year; statement date 2026-01-08 gives it",
+        "period and statement date fall in different years"
+      ],
+      "date_style": "yearless",
+      "gas_unit": "therms",
+      "amount_due": 370.79,
+      "pages": 1
+    },
+    {
+      "file": "synthetic/023_bellmoor_electric.png",
+      "layout": "dense",
+      "format": "png",
+      "traps": [
+        "meter_reads",
+        "missing_zip"
+      ],
+      "notes": [
+        "unpaid balance $87.14: amount due is not the current charges",
+        "service address is street only"
+      ],
+      "date_style": "dmy",
+      "gas_unit": null,
+      "amount_due": 187.51
+    },
+    {
+      "file": "synthetic/024_coralwick_electric.jpg",
+      "layout": "tabular",
+      "format": "jpg",
+      "traps": [
+        "previous_usage",
+        "missing_dates",
+        "degraded"
+      ],
+      "notes": [
+        "no period dates; only a due date",
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "long",
+      "gas_unit": null,
+      "amount_due": 216.44,
+      "degrade": {
+        "tilt_deg": -3.4,
+        "width_px": 720,
+        "blur_sigma": 0.71,
+        "jpeg_quality": 30,
+        "shadow_opacity": 0.3,
+        "light_spot_pct": [
+          24,
+          15
+        ]
+      }
+    },
+    {
+      "file": "synthetic/025_quillfield_combined.pdf",
+      "layout": "combined",
+      "format": "pdf",
+      "traps": [
+        "remit_zip",
+        "combined",
+        "missing_dates"
+      ],
+      "notes": [
+        "no period dates; statement date printed plus day count (do not compute a start date)",
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "slash",
+      "gas_unit": "CCF",
+      "amount_due": 325.09,
+      "pages": 1
+    },
+    {
+      "file": "synthetic/026_saltmarsh_electric.png",
+      "layout": "classic",
+      "format": "png",
+      "traps": [
+        "remit_zip",
+        "previous_usage"
+      ],
+      "notes": [
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "short",
+      "gas_unit": null,
+      "amount_due": 273.21
+    },
+    {
+      "file": "synthetic/027_orrin_electric.jpg",
+      "layout": "modern",
+      "format": "jpg",
+      "traps": [
+        "history_chart",
+        "meter_reads",
+        "degraded"
+      ],
+      "notes": [
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "slash",
+      "gas_unit": null,
+      "amount_due": 103.02,
+      "degrade": {
+        "tilt_deg": 3.1,
+        "width_px": 816,
+        "blur_sigma": 0.71,
+        "jpeg_quality": 33,
+        "shadow_opacity": 0.39,
+        "light_spot_pct": [
+          16,
+          58
+        ]
+      }
+    },
+    {
+      "file": "synthetic/028_graymarsh_electric.pdf",
+      "layout": "dense",
+      "format": "pdf",
+      "traps": [
+        "multi_page",
+        "missing_dates"
+      ],
+      "notes": [
+        "period and statement date fall in different years",
+        "no period dates; only a due date"
+      ],
+      "date_style": "dmy",
+      "gas_unit": null,
+      "amount_due": 116.57,
+      "pages": 2
+    },
+    {
+      "file": "synthetic/029_tamberlane_gas.png",
+      "layout": "tabular",
+      "format": "png",
+      "traps": [
+        "remit_zip",
+        "meter_reads",
+        "ccf_and_therms"
+      ],
+      "notes": [
+        "gas: 33 CCF × 1.037 = 34.2 therms (label)"
+      ],
+      "date_style": "dmy",
+      "gas_unit": "therms",
+      "amount_due": 63.07
+    },
+    {
+      "file": "synthetic/030_kestrel_electric.jpg",
+      "layout": "classic",
+      "format": "jpg",
+      "traps": [
+        "history_chart",
+        "net_metering",
+        "degraded"
+      ],
+      "notes": [
+        "net metering: label = 713 kWh delivered; 384 received, 329 net billed",
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "long",
+      "gas_unit": null,
+      "amount_due": 67.19,
+      "degrade": {
+        "tilt_deg": -3.8,
+        "width_px": 810,
+        "blur_sigma": 0.92,
+        "jpeg_quality": 35,
+        "shadow_opacity": 0.31,
+        "light_spot_pct": [
+          70,
+          10
+        ]
+      }
+    },
+    {
+      "file": "synthetic/031_coralwick_electric.pdf",
+      "layout": "dense",
+      "format": "pdf",
+      "traps": [
+        "remit_zip",
+        "meter_reads",
+        "missing_zip"
+      ],
+      "notes": [
+        "period printed without a year; statement date 2026-01-01 gives it",
+        "period and statement date fall in different years",
+        "unpaid balance $106.74: amount due is not the current charges",
+        "service address is street only"
+      ],
+      "date_style": "yearless_slash",
+      "gas_unit": null,
+      "amount_due": 226.72,
+      "pages": 1
+    },
+    {
+      "file": "synthetic/032_quillfield_combined.png",
+      "layout": "combined",
+      "format": "png",
+      "traps": [
+        "previous_usage",
+        "combined"
+      ],
+      "notes": [
+        "period printed without a year; statement date 2026-07-30 gives it"
+      ],
+      "date_style": "yearless",
+      "gas_unit": "CCF",
+      "amount_due": 265.16
+    },
+    {
+      "file": "synthetic/033_amberline_gas.jpg",
+      "layout": "modern",
+      "format": "jpg",
+      "traps": [
+        "degraded"
+      ],
+      "notes": [],
+      "date_style": "long",
+      "gas_unit": "therms",
+      "amount_due": 58.19,
+      "degrade": {
+        "tilt_deg": 3.1,
+        "width_px": 717,
+        "blur_sigma": 0.66,
+        "jpeg_quality": 40,
+        "shadow_opacity": 0.33,
+        "light_spot_pct": [
+          63,
+          41
+        ]
+      }
+    },
+    {
+      "file": "synthetic/034_vantorra_electric.pdf",
+      "layout": "tabular",
+      "format": "pdf",
+      "traps": [],
+      "notes": [
+        "service ZIP printed as ZIP+4"
+      ],
+      "date_style": "short",
+      "gas_unit": null,
+      "amount_due": 205.27,
+      "pages": 1
+    },
+    {
+      "file": "synthetic/035_fenwick_gas.png",
+      "layout": "dense",
+      "format": "png",
+      "traps": [],
+      "notes": [],
+      "date_style": "long",
+      "gas_unit": "therms",
+      "amount_due": 70.55
+    },
+    {
+      "file": "synthetic/036_parlance_telecom.pdf",
+      "layout": "telecom",
+      "format": "pdf",
+      "traps": [
+        "non_bill"
+      ],
+      "notes": [
+        "phone bill (has ZIP, dates, totals but no energy)"
+      ],
+      "pages": 1
+    },
+    {
+      "file": "synthetic/037_caldersprings_water.png",
+      "layout": "water",
+      "format": "png",
+      "traps": [
+        "non_bill"
+      ],
+      "notes": [
+        "water-only bill (usage in CCF, like gas)"
+      ]
+    },
+    {
+      "file": "synthetic/038_hollinspratt_receipt.jpg",
+      "layout": "receipt",
+      "format": "jpg",
+      "traps": [
+        "non_bill",
+        "degraded"
+      ],
+      "notes": [
+        "grocery receipt"
+      ],
+      "degrade": {
+        "tilt_deg": -6.7,
+        "width_px": 779,
+        "blur_sigma": 0.7,
+        "jpeg_quality": 30,
+        "shadow_opacity": 0.45,
+        "light_spot_pct": [
+          24,
+          49
+        ]
+      }
+    }
+  ]
+}
