@@ -3,6 +3,7 @@ import { useState } from "react";
 import { AlertTriangle, Info } from "lucide-react";
 import { Brand, Shell } from "@/components/shell";
 import type { Flag } from "@/lib/checks";
+import type { BillCosts } from "@/lib/analysis";
 import type { ConfirmedBill } from "@/lib/emissions";
 import type { GasUnit } from "@/lib/factors";
 import type { ExtractedBill } from "@/lib/schema";
@@ -18,7 +19,7 @@ export function ReviewStep({
 }: {
   bill: ExtractedBill;
   flags: Flag[];
-  onConfirm: (confirmed: ConfirmedBill) => void;
+  onConfirm: (confirmed: ConfirmedBill & BillCosts) => void;
   onBack: () => void;
   busy: boolean;
 }) {
@@ -28,6 +29,10 @@ export function ReviewStep({
   const [kwh, setKwh] = useState(bill.electricity ? String(bill.electricity.usage_kwh) : "");
   const [gasAmount, setGasAmount] = useState(bill.natural_gas ? String(bill.natural_gas.usage) : "");
   const [gasUnit, setGasUnit] = useState<GasUnit>(bill.natural_gas?.unit ?? "therms");
+  // Per-fuel charges; on a single-fuel bill the total is that fuel's charge.
+  const singleFuel = Boolean(bill.electricity) !== Boolean(bill.natural_gas);
+  const [elecCost, setElecCost] = useState(String(bill.electricity?.cost_usd ?? (singleFuel && bill.electricity ? bill.total_cost_usd ?? "" : "")));
+  const [gasCost, setGasCost] = useState(String(bill.natural_gas?.cost_usd ?? (singleFuel && bill.natural_gas ? bill.total_cost_usd ?? "" : "")));
 
   const flagsFor = (field: string) => flags.filter((f) => f.field === field);
   const canSubmit = start !== "" && end !== "" && (kwh !== "" || gasAmount !== "") && !busy;
@@ -39,6 +44,8 @@ export function ReviewStep({
       periodEnd: end,
       electricityKwh: kwh === "" ? null : Number(kwh),
       gas: gasAmount === "" ? null : { amount: Number(gasAmount), unit: gasUnit },
+      electricityCostUsd: kwh !== "" && elecCost !== "" ? Number(elecCost) : null,
+      gasCostUsd: gasAmount !== "" && gasCost !== "" ? Number(gasCost) : null,
     });
   }
 
@@ -82,6 +89,13 @@ export function ReviewStep({
 
         <Field label="Service ZIP (picks your local grid)" flags={flagsFor("zip")}>
           <input inputMode="numeric" maxLength={5} value={zip} onChange={(e) => setZip(e.target.value.replace(/\D/g, ""))} placeholder="e.g. 94110" className={inputClass} />
+        </Field>
+
+        <Field label="Charges this period ($, optional: used for your savings in dollars)" flags={[]}>
+          <div className="flex gap-2">
+            {kwh !== "" && <input inputMode="decimal" value={elecCost} onChange={(e) => setElecCost(e.target.value)} placeholder="Electric $" aria-label="Electricity charges in dollars" className={inputClass} />}
+            {gasAmount !== "" && <input inputMode="decimal" value={gasCost} onChange={(e) => setGasCost(e.target.value)} placeholder="Gas $" aria-label="Gas charges in dollars" className={inputClass} />}
+          </div>
         </Field>
       </div>
 

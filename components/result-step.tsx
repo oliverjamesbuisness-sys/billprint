@@ -1,11 +1,17 @@
 "use client";
-import { Flame, RotateCcw, Zap } from "lucide-react";
+import { Flame, Lightbulb, RotateCcw, Zap } from "lucide-react";
 import { Brand, Shell, formatKg } from "@/components/shell";
-import type { Footprint, FuelResult } from "@/lib/emissions";
+import type { BillAnalysis } from "@/lib/analysis";
+import type { FuelResult } from "@/lib/emissions";
+import type { Recommendation } from "@/lib/recommendations";
 
-export function ResultStep({ footprint, provider, onRestart }: { footprint: Footprint; provider: string | null; onRestart: () => void }) {
+const twoSig = new Intl.NumberFormat("en-US", { maximumSignificantDigits: 2 });
+const range = (low: number, high: number, prefix = "") =>
+  Math.abs(high - low) < 0.5 ? `${prefix}${twoSig.format(low)}` : `${prefix}${twoSig.format(low)}–${twoSig.format(high)}`;
+
+export function ResultStep({ analysis, provider, onRestart }: { analysis: BillAnalysis; provider: string | null; onRestart: () => void }) {
+  const { footprint, annual, typical, recommendations, prices } = analysis;
   const { totalKgCo2e, days, electricity, gas } = footprint;
-  const per30 = (totalKgCo2e / days) * 30;
 
   return (
     <Shell
@@ -18,12 +24,31 @@ export function ResultStep({ footprint, provider, onRestart }: { footprint: Foot
             <span className="text-base font-medium text-white/80">kg CO₂e</span>
           </p>
           <p className="mt-2 text-white/75">
-            over {days} days · about {formatKg(per30)} kg per 30 days
+            over {days} days · about {formatKg((totalKgCo2e / days) * 30)} kg per 30 days
+          </p>
+          <p className="mt-4 inline-block rounded-full bg-white/10 px-3 py-1 text-sm text-white/90">
+            ≈ {twoSig.format(annual.kgCo2e / 1000)} tonnes a year (seasonal estimate)
           </p>
         </>
       }
     >
-      <h2 className="text-lg font-semibold text-navy-ink">Where it comes from</h2>
+      <h2 className="text-lg font-semibold text-navy-ink">3 ways to cut it</h2>
+      <p className="mt-1 text-sm text-ink-muted">Picked for this bill. Savings overlap, so don&apos;t add them up.</p>
+      <div className="mt-3 space-y-3">
+        {recommendations.map((rec) => (
+          <ActionCard key={rec.id} rec={rec} />
+        ))}
+      </div>
+      <p className="mt-2 text-xs text-ink-muted">
+        $ uses{" "}
+        {[prices.electricity && (prices.electricity.fromBill ? `your bill's $${prices.electricity.usdPerUnit.toFixed(2)}/kWh` : "the US average electricity price"),
+          prices.gas && (prices.gas.fromBill ? `your bill's $${prices.gas.usdPerUnit.toFixed(2)}/therm` : "the US average gas price")]
+          .filter(Boolean)
+          .join(" and ")}
+        {prices.electricity?.fromBill || prices.gas?.fromBill ? " (includes fixed fees, so savings may be slightly high)" : ` (${prices.fallbackSource})`}.
+      </p>
+
+      <h2 className="mt-8 text-lg font-semibold text-navy-ink">Where it comes from</h2>
       <div className="mt-3 space-y-3">
         {electricity && (
           <BreakdownCard
@@ -44,25 +69,92 @@ export function ResultStep({ footprint, provider, onRestart }: { footprint: Foot
             label="Natural gas"
             fuel={gas}
             share={gas.kgCo2e / totalKgCo2e}
-            note="Burning gas at home. Methane leaked before it reaches you isn't counted."
+            note="Burning gas at home. Methane leaked before it reaches you isn't counted, so this is a lower bound."
           />
         )}
       </div>
 
+      <ComparisonCard yours={{ electricity: electricity?.kgCo2e ?? 0, gas: gas?.kgCo2e ?? 0 }} typical={{ electricity: typical.electricityKgCo2e, gas: typical.gasKgCo2e }} source={typical.source} />
+
       <div className="mt-6 grid grid-cols-2 gap-3">
         {electricity && <Tile value={electricity.usage.toLocaleString("en-US")} label="kWh used" />}
-        {gas && <Tile value={`${gas.usage.toLocaleString("en-US")}`} label={`${gas.unit} of gas`} />}
+        {gas && <Tile value={gas.usage.toLocaleString("en-US")} label={`${gas.unit} of gas`} />}
         <Tile value={String(days)} label="days in this bill" />
         {electricity && <Tile value={electricity.factor.toFixed(3)} label="kg CO₂e per kWh on your grid" />}
       </div>
 
+      <p className="mt-6 text-xs leading-relaxed text-ink-muted">
+        Yearly figure: this bill scaled by how much of a typical year&apos;s use falls in these days ({annual.source}), not ×12.
+        Your climate can make your real year differ.
+      </p>
+
       <button
         onClick={onRestart}
-        className="mt-8 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-line py-3 text-sm font-medium text-ink transition-colors hover:bg-page"
+        className="mt-6 flex w-full cursor-pointer items-center justify-center gap-2 rounded-2xl border border-line py-3 text-sm font-medium text-ink transition-colors hover:bg-page"
       >
         <RotateCcw className="size-4" aria-hidden /> Check another bill
       </button>
     </Shell>
+  );
+}
+
+function ActionCard({ rec }: { rec: Recommendation }) {
+  return (
+    <div className="rounded-2xl border border-line p-4">
+      <p className="flex gap-2 font-semibold text-navy-ink">
+        <Lightbulb className="mt-0.5 size-5 shrink-0 text-brand" aria-hidden />
+        {rec.title}
+      </p>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <div className="rounded-xl bg-brand-tint px-3 py-2">
+          <p className="tabular text-lg font-semibold text-brand-dark">{range(rec.co2KgPerYear.low, rec.co2KgPerYear.high)} kg</p>
+          <p className="text-xs text-ink-muted">CO₂e saved / year</p>
+        </div>
+        <div className="rounded-xl bg-page px-3 py-2">
+          <p className="tabular text-lg font-semibold text-navy-ink">{range(rec.usdPerYear.low, rec.usdPerYear.high, "$")}</p>
+          <p className="text-xs text-ink-muted">saved / year</p>
+        </div>
+      </div>
+      <p className="mt-3 text-sm text-ink">
+        <span className="font-medium">Why this one: </span>
+        {rec.why}
+      </p>
+      <p className="mt-1 text-sm text-ink-muted">{rec.how}</p>
+      <details className="mt-2 text-xs text-ink-muted">
+        <summary className="cursor-pointer font-medium text-brand">Source</summary>
+        <p className="mt-1">{rec.source}</p>
+      </details>
+    </div>
+  );
+}
+
+function ComparisonCard({ yours, typical, source }: { yours: { electricity: number; gas: number }; typical: { electricity: number; gas: number }; source: string }) {
+  const max = Math.max(yours.electricity + yours.gas, typical.electricity + typical.gas);
+  return (
+    <div className="mt-6 rounded-2xl border border-line p-4">
+      <p className="font-semibold text-navy-ink">Your home vs a typical US home</p>
+      <p className="text-xs text-ink-muted">Same days, same grid · dark = electricity, light = gas</p>
+      <div className="mt-4 space-y-3">
+        <ComparisonBar label="Your home" electricity={yours.electricity} gas={yours.gas} max={max} />
+        <ComparisonBar label="Typical US home" electricity={typical.electricity} gas={typical.gas} max={max} />
+      </div>
+      <p className="mt-3 text-xs text-ink-muted">Typical usage: {source}.</p>
+    </div>
+  );
+}
+
+function ComparisonBar({ label, electricity, gas, max }: { label: string; electricity: number; gas: number; max: number }) {
+  return (
+    <div>
+      <div className="flex justify-between text-sm">
+        <span className="text-ink">{label}</span>
+        <span className="tabular font-medium text-navy-ink">{formatKg(electricity + gas)} kg</span>
+      </div>
+      <div className="mt-1.5 flex h-3 overflow-hidden rounded-full bg-page">
+        <div className="bg-brand" style={{ width: `${(electricity / max) * 100}%` }} />
+        <div className="bg-brand/40" style={{ width: `${(gas / max) * 100}%` }} />
+      </div>
+    </div>
   );
 }
 

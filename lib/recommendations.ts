@@ -135,6 +135,5 @@ export function recommend(ctx: RecommendationContext): Recommendation[] {
   const mid = (c: Candidate) => (c.co2KgPerYear.low + c.co2KgPerYear.high) / 2;
   return candidates
     .sort((a, b) => b.priority - a.priority || mid(b) - mid(a))
-    .slice(0, 3)
-    .map(({ priority: _priority, ...rec }) => rec);
+    .slice(0, 3);
 }

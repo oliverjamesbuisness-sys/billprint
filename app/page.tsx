@@ -5,7 +5,8 @@ import { ResultStep } from "@/components/result-step";
 import { ReviewStep } from "@/components/review-step";
 import { ReadingStep, UploadStep } from "@/components/upload-step";
 import type { Flag } from "@/lib/checks";
-import type { ConfirmedBill, Footprint } from "@/lib/emissions";
+import type { BillAnalysis, BillCosts } from "@/lib/analysis";
+import type { ConfirmedBill } from "@/lib/emissions";
 import type { ExtractedBill } from "@/lib/schema";
 import { shrinkImage } from "@/lib/shrink-image";
 
@@ -13,7 +14,7 @@ type State =
   | { step: "upload"; error?: string }
   | { step: "reading" }
   | { step: "review"; bill: ExtractedBill; flags: Flag[]; busy: boolean }
-  | { step: "result"; footprint: Footprint; provider: string | null };
+  | { step: "result"; analysis: BillAnalysis; provider: string | null };
 
 export default function Home() {
   const [state, setState] = useState<State>({ step: "upload" });
@@ -33,7 +34,7 @@ export default function Home() {
     }
   }
 
-  async function handleConfirm(confirmed: ConfirmedBill) {
+  async function handleConfirm(confirmed: ConfirmedBill & BillCosts) {
     if (state.step !== "review") return;
     setState({ ...state, busy: true });
     const response = await fetch("/api/calculate", {
@@ -46,7 +47,7 @@ export default function Home() {
       setState({ ...state, busy: false, flags: [{ field: "all", level: "warning", message: data.error }, ...state.flags] });
       return;
     }
-    setState({ step: "result", footprint: data.footprint, provider: state.bill.provider });
+    setState({ step: "result", analysis: data, provider: state.bill.provider });
   }
 
   switch (state.step) {
@@ -65,6 +66,6 @@ export default function Home() {
         />
       );
     case "result":
-      return <ResultStep footprint={state.footprint} provider={state.provider} onRestart={() => setState({ step: "upload" })} />;
+      return <ResultStep analysis={state.analysis} provider={state.provider} onRestart={() => setState({ step: "upload" })} />;
   }
 }
