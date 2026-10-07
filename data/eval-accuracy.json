@@ -1,0 +1,6 @@
+{
+  "model": null,
+  "ranAt": null,
+  "note": "Placeholder. Run `npm run eval -- --publish` to fill this in with measured per-field accuracy.",
+  "perField": {}
+}

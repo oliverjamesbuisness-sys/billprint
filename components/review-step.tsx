@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
-import { AlertTriangle, Info } from "lucide-react";
+import { AlertTriangle, FlaskConical, Info } from "lucide-react";
 import { Brand, Shell } from "@/components/shell";
 import type { Flag } from "@/lib/checks";
+import { measuredAccuracy } from "@/lib/accuracy";
 import type { BillCosts } from "@/lib/analysis";
 import type { ConfirmedBill } from "@/lib/emissions";
 import type { GasUnit } from "@/lib/factors";
@@ -64,11 +65,11 @@ export function ReviewStep({
       <FlagList flags={flagsFor("all")} />
 
       <div className="space-y-5">
-        <Field label="Electricity used (kWh)" evidence={bill.electricity?.evidence} flags={flagsFor("electricity")}>
+        <Field label="Electricity used (kWh)" evidence={bill.electricity?.evidence} flags={flagsFor("electricity")} accuracyField="electricity_kwh">
           <input inputMode="decimal" value={kwh} onChange={(e) => setKwh(e.target.value)} placeholder="None on this bill" className={inputClass} />
         </Field>
 
-        <Field label="Gas used" evidence={bill.natural_gas?.evidence} flags={flagsFor("gas")}>
+        <Field label="Gas used" evidence={bill.natural_gas?.evidence} flags={flagsFor("gas")} accuracyField="gas_usage">
           <div className="flex gap-2">
             <input inputMode="decimal" value={gasAmount} onChange={(e) => setGasAmount(e.target.value)} placeholder="None on this bill" className={inputClass} />
             <select value={gasUnit} onChange={(e) => setGasUnit(e.target.value as GasUnit)} className={`${inputClass} w-28 cursor-pointer`} aria-label="Gas unit">
@@ -79,7 +80,7 @@ export function ReviewStep({
           </div>
         </Field>
 
-        <Field label="Billing period" flags={flagsFor("period")}>
+        <Field label="Billing period" flags={flagsFor("period")} accuracyField="period_start">
           <div className="flex items-center gap-2">
             <input type="date" value={start} onChange={(e) => setStart(e.target.value)} className={inputClass} aria-label="Start date" />
             <span className="text-ink-muted">to</span>
@@ -87,7 +88,7 @@ export function ReviewStep({
           </div>
         </Field>
 
-        <Field label="Service ZIP (picks your local grid)" flags={flagsFor("zip")}>
+        <Field label="Service ZIP (picks your local grid)" flags={flagsFor("zip")} accuracyField="service_zip">
           <input inputMode="numeric" maxLength={5} value={zip} onChange={(e) => setZip(e.target.value.replace(/\D/g, ""))} placeholder="e.g. 94110" className={inputClass} />
         </Field>
 
@@ -116,14 +117,40 @@ export function ReviewStep({
 const inputClass =
   "w-full rounded-xl border border-line bg-white px-3 py-3 text-base text-ink tabular transition-colors focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/30";
 
-function Field({ label, evidence, flags, children }: { label: string; evidence?: string; flags: Flag[]; children: React.ReactNode }) {
+function Field({
+  label,
+  evidence,
+  flags,
+  accuracyField,
+  children,
+}: {
+  label: string;
+  evidence?: string;
+  flags: Flag[];
+  accuracyField?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
       <p className="mb-1.5 text-sm font-medium text-navy-ink">{label}</p>
       {children}
       {evidence && <p className="mt-1.5 text-xs text-ink-muted">From your bill: &ldquo;{evidence}&rdquo;</p>}
+      {accuracyField && <TestedNote field={accuracyField} />}
       <FlagList flags={flags} />
     </div>
+  );
+}
+
+// Differentiator: measured error from our eval, not the model's self-confidence, right where you check.
+function TestedNote({ field }: { field: string }) {
+  const tested = measuredAccuracy(field);
+  if (!tested) return null;
+  const shaky = tested.k / tested.n < 0.9;
+  return (
+    <p className={`mt-1 flex items-center gap-1.5 text-xs ${shaky ? "font-medium text-warn" : "text-ink-muted"}`}>
+      <FlaskConical className="size-3.5 shrink-0" aria-hidden />
+      In testing, our AI read this right on {tested.k} of {tested.n} {tested.group} bills{shaky ? ", so please check it" : ""}.
+    </p>
   );
 }
 
