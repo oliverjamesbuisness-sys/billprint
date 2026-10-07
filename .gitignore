@@ -48,3 +48,6 @@ yarn-error.log*
 next-env.d.ts
 
 /data/raw/
+
+# eval: cached raw model outputs (re-scoring is free); results are committed
+/eval/cache/

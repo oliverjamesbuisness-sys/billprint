@@ -12,7 +12,7 @@ export type BillFile = {
   mediaType: "application/pdf" | "image/jpeg" | "image/png" | "image/webp" | "image/gif";
 };
 
-const SYSTEM_PROMPT = `You read US residential utility bills (electricity and/or natural gas) and extract a few fields.
+export const SYSTEM_PROMPT = `You read US residential utility bills (electricity and/or natural gas) and extract a few fields.
 
 Rules:
 - First decide whether the file is a utility bill. If it is not, set is_utility_bill to false, give a short friendly rejection_reason, set every other field to null, notes to [] and confidence to "high".
