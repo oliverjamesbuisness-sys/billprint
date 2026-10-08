@@ -1,6 +1,6 @@
 "use client";
 // The whole app is one 3-step flow: upload -> review (one-tap confirm) -> result.
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ResultStep } from "@/components/result-step";
 import { ReviewStep } from "@/components/review-step";
 import { ReadingStep, UploadStep } from "@/components/upload-step";
@@ -19,6 +19,9 @@ type State =
 
 export default function Home() {
   const [state, setState] = useState<State>({ step: "upload" });
+
+  // Each step opens at the top, so the hero number is the first thing you see.
+  useEffect(() => window.scrollTo(0, 0), [state.step]);
 
   async function handleFile(file: File) {
     setState({ step: "reading" });
