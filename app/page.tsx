@@ -21,7 +21,9 @@ export default function Home() {
   const [state, setState] = useState<State>({ step: "upload" });
 
   // Each step opens at the top, so the hero number is the first thing you see.
-  useEffect(() => window.scrollTo(0, 0), [state.step]);
+  useEffect(() => {
+    window.scrollTo(0, 0); // block body: scrollTo can return a Promise, and effects must not return one
+  }, [state.step]);
 
   async function handleFile(file: File) {
     setState({ step: "reading" });
