@@ -1,6 +1,8 @@
 "use client";
-import { Flame, Lightbulb, RotateCcw, Zap } from "lucide-react";
+import { CalendarCheck, Flame, Lightbulb, RotateCcw, Zap } from "lucide-react";
 import { Brand, Shell, formatKg } from "@/components/shell";
+import { TrendChart } from "@/components/trend-chart";
+import { monthStreak, type HistoryEntry } from "@/lib/history";
 import type { BillAnalysis } from "@/lib/analysis";
 import type { FuelResult } from "@/lib/emissions";
 import type { Recommendation } from "@/lib/recommendations";
@@ -9,9 +11,20 @@ const twoSig = new Intl.NumberFormat("en-US", { maximumSignificantDigits: 2 });
 const range = (low: number, high: number, prefix = "") =>
   Math.abs(high - low) < 0.5 ? `${prefix}${twoSig.format(low)}` : `${prefix}${twoSig.format(low)}–${twoSig.format(high)}`;
 
-export function ResultStep({ analysis, provider, onRestart }: { analysis: BillAnalysis; provider: string | null; onRestart: () => void }) {
+export function ResultStep({
+  analysis,
+  provider,
+  history,
+  onRestart,
+}: {
+  analysis: BillAnalysis;
+  provider: string | null;
+  history: HistoryEntry[];
+  onRestart: () => void;
+}) {
   const { footprint, annual, typical, recommendations, prices } = analysis;
   const { totalKgCo2e, days, electricity, gas } = footprint;
+  const streak = monthStreak(history);
 
   return (
     <Shell
@@ -26,9 +39,17 @@ export function ResultStep({ analysis, provider, onRestart }: { analysis: BillAn
           <p className="mt-2 text-white/75">
             over {days} days · about {formatKg((totalKgCo2e / days) * 30)} kg per 30 days
           </p>
-          <p className="mt-4 inline-block rounded-full bg-white/10 px-3 py-1 text-sm text-white/90">
-            ≈ {twoSig.format(annual.kgCo2e / 1000)} tonnes a year (seasonal estimate)
-          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <span className="rounded-full bg-white/10 px-3 py-1 text-sm text-white/90">
+              ≈ {twoSig.format(annual.kgCo2e / 1000)} tonnes a year (seasonal estimate)
+            </span>
+            {streak >= 2 && (
+              <span className="flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-sm text-white/90">
+                <CalendarCheck className="size-4" aria-hidden /> {streak} months in a row
+              </span>
+            )}
+          </div>
+          <TrendChart history={history} typicalPer30={(typical.kgCo2e / days) * 30} />
         </>
       }
     >
@@ -76,6 +97,8 @@ export function ResultStep({ analysis, provider, onRestart }: { analysis: BillAn
 
       <ComparisonCard yours={{ electricity: electricity?.kgCo2e ?? 0, gas: gas?.kgCo2e ?? 0 }} typical={{ electricity: typical.electricityKgCo2e, gas: typical.gasKgCo2e }} source={typical.source} />
 
+      {history.length > 1 && <HistoryList history={history} />}
+
       <div className="mt-6 grid grid-cols-2 gap-3">
         {electricity && <Tile value={electricity.usage.toLocaleString("en-US")} label="kWh used" />}
         {gas && <Tile value={gas.usage.toLocaleString("en-US")} label={`${gas.unit} of gas`} />}
@@ -95,6 +118,36 @@ export function ResultStep({ analysis, provider, onRestart }: { analysis: BillAn
         <RotateCcw className="size-4" aria-hidden /> Check another bill
       </button>
     </Shell>
+  );
+}
+
+function HistoryList({ history }: { history: HistoryEntry[] }) {
+  const newestFirst = [...history].reverse();
+  return (
+    <div className="mt-6">
+      <h2 className="text-lg font-semibold text-navy-ink">Your bills</h2>
+      <p className="text-xs text-ink-muted">Saved only in this browser, numbers only.</p>
+      <ul className="mt-2 divide-y divide-line">
+        {newestFirst.map((entry, i) => {
+          const older = newestFirst[i + 1];
+          const change = older ? (entry.kgPer30Days - older.kgPer30Days) / older.kgPer30Days : null;
+          const month = new Date(`${entry.periodEnd}T00:00:00Z`).toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
+          return (
+            <li key={entry.periodEnd + entry.periodStart} className="flex items-center justify-between py-3 text-sm">
+              <span className="text-ink">{month}</span>
+              <span className="flex items-center gap-2">
+                <span className="tabular font-medium text-navy-ink">{formatKg(entry.kgPer30Days)} kg / 30 days</span>
+                {change !== null && (
+                  <span className={`tabular rounded-full px-2 py-0.5 text-xs ${change <= 0 ? "bg-brand-tint text-brand-dark" : "bg-warn-tint text-warn"}`}>
+                    {change <= 0 ? "▼" : "▲"} {Math.abs(Math.round(change * 100))}%
+                  </span>
+                )}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
 

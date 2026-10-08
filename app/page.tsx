@@ -7,6 +7,7 @@ import { ReadingStep, UploadStep } from "@/components/upload-step";
 import type { Flag } from "@/lib/checks";
 import type { BillAnalysis, BillCosts } from "@/lib/analysis";
 import type { ConfirmedBill } from "@/lib/emissions";
+import { saveToHistory, type HistoryEntry } from "@/lib/history";
 import type { ExtractedBill } from "@/lib/schema";
 import { shrinkImage } from "@/lib/shrink-image";
 
@@ -14,7 +15,7 @@ type State =
   | { step: "upload"; error?: string }
   | { step: "reading" }
   | { step: "review"; bill: ExtractedBill; flags: Flag[]; busy: boolean }
-  | { step: "result"; analysis: BillAnalysis; provider: string | null };
+  | { step: "result"; analysis: BillAnalysis; provider: string | null; history: HistoryEntry[] };
 
 export default function Home() {
   const [state, setState] = useState<State>({ step: "upload" });
@@ -47,7 +48,16 @@ export default function Home() {
       setState({ ...state, busy: false, flags: [{ field: "all", level: "warning", message: data.error }, ...state.flags] });
       return;
     }
-    setState({ step: "result", analysis: data, provider: state.bill.provider });
+    const analysis: BillAnalysis = data;
+    const { totalKgCo2e, days } = analysis.footprint;
+    // Numbers only, kept in this browser: powers the trend line and streak.
+    const history = saveToHistory({
+      periodStart: confirmed.periodStart,
+      periodEnd: confirmed.periodEnd,
+      kgCo2e: totalKgCo2e,
+      kgPer30Days: (totalKgCo2e / days) * 30,
+    });
+    setState({ step: "result", analysis, provider: state.bill.provider, history });
   }
 
   switch (state.step) {
@@ -66,6 +76,13 @@ export default function Home() {
         />
       );
     case "result":
-      return <ResultStep analysis={state.analysis} provider={state.provider} onRestart={() => setState({ step: "upload" })} />;
+      return (
+        <ResultStep
+          analysis={state.analysis}
+          provider={state.provider}
+          history={state.history}
+          onRestart={() => setState({ step: "upload" })}
+        />
+      );
   }
 }
