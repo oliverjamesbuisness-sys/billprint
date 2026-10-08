@@ -1,0 +1,7 @@
+# Not needed by the deployed site (keeps uploads small)
+eval/
+data/raw/
+tests/
+scripts/
+design-system/
+.claude/
